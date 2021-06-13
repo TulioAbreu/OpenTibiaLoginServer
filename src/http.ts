@@ -6,7 +6,7 @@ import Crypto from './crypto';
 import DB from './db';
 import Limits from './limits';
 import Status from './status';
-import { getVocationName } from './vocations';
+import { getVocationNameById } from './services/vocation';
 
 export default class TibiaHTTP {
 
@@ -277,7 +277,7 @@ export default class TibiaHTTP {
                 "detailcolor": character.lookfeet,
                 "outfitid": character.looktype,
                 "addonsflags": character.lookaddons,
-                "vocation": getVocationName(character.vocation),
+                "vocation": getVocationNameById(character.vocation),
                 "tutorial": false,
                 "ismale": character.sex == 1
             });

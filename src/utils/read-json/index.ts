@@ -1,5 +1,5 @@
 import { readFileSync } from "fs";
-import { Maybe } from "../maybe"
+import type { Maybe } from "../maybe"
 
 export function readJSONFileSync(filepath: string): Maybe<unknown> {
     try {

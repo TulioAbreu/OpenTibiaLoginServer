@@ -7,6 +7,7 @@ import DB from './db';
 import Limits from './limits';
 import Status from './status';
 import { getVocationNameById } from './services/vocation';
+import { encryptPassword } from './services/crypto/hash-password';
 
 export default class TibiaHTTP {
 
@@ -211,7 +212,7 @@ export default class TibiaHTTP {
         }
 
         let account = await DB.loadAccountByName(account_name);
-        let hashed_password = Crypto.hashPassword(account_password);
+        let hashed_password = encryptPassword(Config.encryption, account_password);
         if (!account || account.password != hashed_password) {
             Limits.addInvalidAuthorization(ip_address);
             return loginError("Invalid account/password");

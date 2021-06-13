@@ -90,19 +90,6 @@ class Crypto {
         return this.hash("sha512", data);
     }
 
-    hashPassword = (password: string): string => {
-        if (Config.encryption == "sha" || Config.encryption == "sha1") {
-            return this.sha1(password);
-        } else if (Config.encryption == "sha2" || Config.encryption == "sha256") {
-            return this.sha256(password);
-        } else if (Config.encryption == "sha512") {
-            return this.sha512(password);
-        } else if (Config.encryption == "md5") {
-            return this.md5(password);
-        }
-        return password;
-    }
-
     validateToken = (token: string, secret: string): boolean => {
         return authenticator .check(token, secret);
     }

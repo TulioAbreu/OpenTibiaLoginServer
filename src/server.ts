@@ -47,7 +47,7 @@ export default class Server {
                     this.app.listen(Config.http.host, port, (listenSocket) => {
                         if (listenSocket) {
                             this.sockets.push(listenSocket);
-                            resolve();
+                            resolve(undefined);
                         }
                     });
                 });

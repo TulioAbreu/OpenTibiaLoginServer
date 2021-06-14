@@ -1,4 +1,5 @@
-import { InputPacket, OutputPacket } from './packet';
+import { InputPacket } from "./services/packet/input";
+
 import { Builder } from 'xml2js';
 
 import Config from './config';

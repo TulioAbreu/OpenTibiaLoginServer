@@ -10,7 +10,7 @@ import { InputPacket } from './services/packet/input';
 import { OutputPacket } from './services/packet/output';
 import { getMotd, getMotdId } from './motd';
 import Status from './status';
-import { ip2int } from './utils';
+import { ip2int } from './utils/ip-to-int';
 import { encryptPassword } from './services/crypto/hash-password';
 
 const TIMEOUT = 15000;

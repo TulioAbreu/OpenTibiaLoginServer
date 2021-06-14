@@ -1,6 +1,6 @@
 import { TemplatedApp, WebSocket, HttpRequest, HttpResponse } from 'uWebSockets.js';
 import Cams from './services/cams';
-import Casts from './casts';
+import Casts from './services/casts';
 import { config } from './services/config';
 import Crypto from './crypto';
 import DB from './db';

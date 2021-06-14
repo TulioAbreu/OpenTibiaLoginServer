@@ -1,7 +1,7 @@
 import * as net from 'net';
 
 import Cams from './services/cams';
-import Casts from './casts';
+import Casts from './services/casts';
 import { config } from './services/config';
 import { worlds } from "./services/world";
 import Crypto from './crypto';

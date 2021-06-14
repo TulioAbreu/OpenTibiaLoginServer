@@ -1,6 +1,6 @@
 import * as net from 'net';
 
-import Cams from './cams';
+import Cams from './services/cams';
 import Casts from './casts';
 import { config } from './services/config';
 import { worlds } from "./services/world";
@@ -228,7 +228,7 @@ export default class TibiaTCP {
             this.send(socket, outputPacket, has_checksum, xtea);
         }
 
-        if (PROTOCOL_MIN_VERSION < version && version < PROTOCOL_MAX_VERSION) {
+        if (!(PROTOCOL_MIN_VERSION < version && version < PROTOCOL_MAX_VERSION)) {
             return loginError(`Invalid client version (should be: ${PROTOCOL_MIN_VERSION}-${PROTOCOL_MAX_VERSION}, is: ${version}).`);
         }
 

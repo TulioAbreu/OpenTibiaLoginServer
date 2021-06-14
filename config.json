@@ -11,12 +11,6 @@
     "id": 1,
     "text": "Hello!"
   },
-  "mysql": {
-    "host": "otclient.ovh",
-    "user": "otclient",
-    "password": "otclient",
-    "database": "otclient"
-  },
   "tcp": {
     "enabled": true,
     "host": "0.0.0.0",

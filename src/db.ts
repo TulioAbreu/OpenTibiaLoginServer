@@ -47,10 +47,10 @@ class DB {
             throw "DB has already started";
         }
         this.conn = await mysql.createPool({
-            host: Config.mysql.host,
-            user: Config.mysql.user,
-            password: Config.mysql.password,
-            database: Config.mysql.database,
+            host: process.env.MYSQL_HOST,
+            user: process.env.MYSQL_USER,
+            password: process.env.MYSQL_PASSWORD,
+            database: process.env.MYSQL_DATABASE,
             waitForConnections: true,
             connectionLimit: 10,
             queueLimit: 10000

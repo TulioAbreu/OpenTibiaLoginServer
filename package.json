@@ -14,6 +14,7 @@
     "benchmark": "node build/tests/benchmark.js"
   },
   "devDependencies": {
+    "@types/dotenv": "^8.2.0",
     "@types/mysql2": "github:types/mysql2",
     "@types/node": "^8.0.14",
     "@types/xml2js": "^0.4.5",
@@ -21,6 +22,7 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
+    "dotenv": "^10.0.0",
     "mysql2": "^2.1.0",
     "otplib": "^12.0.1",
     "uwebsockets.js": "^19.0.0",

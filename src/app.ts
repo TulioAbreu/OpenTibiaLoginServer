@@ -1,3 +1,6 @@
+import { config } from "dotenv";
+config();
+
 import Config from './config';
 import Crypto from './crypto';
 import DB from './db';

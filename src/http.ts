@@ -1,13 +1,14 @@
 import { TemplatedApp, WebSocket, HttpRequest, HttpResponse } from 'uWebSockets.js';
 import Cams from './cams';
 import Casts from './casts';
-import Config from './config';
+import { config } from './services/config';
 import Crypto from './crypto';
 import DB from './db';
 import Limits from './limits';
 import Status from './status';
 import { getVocationNameById } from './services/vocation';
 import { encryptPassword } from './services/crypto/hash-password';
+import { worlds } from './services/world';
 
 export default class TibiaHTTP {
 
@@ -212,7 +213,8 @@ export default class TibiaHTTP {
         }
 
         let account = await DB.loadAccountByName(account_name);
-        let hashed_password = encryptPassword(Config.encryption, account_password);
+        // FIXME: any
+        let hashed_password = encryptPassword(config.encryption as any, account_password);
         if (!account || account.password != hashed_password) {
             Limits.addInvalidAuthorization(ip_address);
             return loginError("Invalid account/password");
@@ -251,7 +253,7 @@ export default class TibiaHTTP {
         
         response['session']['sessionkey'] = `${account_name}\n${account_password}\n${account_token}\n${Math.floor(Date.now() / 30000)})`;
 
-        Config.worlds.forEach((world) => {
+        worlds.forEach((world) => {
             response['playdata']['worlds'].push({
                 "id": world.id,
                 "name": world.name,

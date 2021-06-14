@@ -1,11 +1,11 @@
 import { InputPacket } from "./services/packet/input";
-
 import { Builder } from 'xml2js';
-
-import Config from './config';
+import { worlds } from "./services/world";
+import { config } from './services/config';
 import DB from './db';
 import { getMotd } from './motd';
 
+const PROTOCOL_MAX_VERSION = config.version.max;
 let UPDATE_INTERVAL = 5000;
 
 class Status {
@@ -29,7 +29,7 @@ class Status {
         let type = packet.getU8();
         if (type == 0xFF) { // general info
             let worldId;
-            Config.worlds.forEach((world) => {
+            worlds.forEach((world) => {
                 if (world.status_port == port) {
                     worldId = world.id;
                 }
@@ -61,7 +61,7 @@ class Status {
     }
 
     private get = async (world_id: number) => {
-        let world = Config.worlds.get(world_id);
+        let world = worlds.get(world_id);
         if (!world) {
             return "INVALID_WORLD_ID";
         }
@@ -91,7 +91,7 @@ class Status {
                         "url": world.url,
                         "server": "Open Tibia Login Server",
                         "version": "1.0",
-                        "client": Config.version.max
+                        "client": PROTOCOL_MAX_VERSION,
                     }
                 },
                 "owner": {

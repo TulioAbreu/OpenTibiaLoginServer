@@ -1,7 +1,7 @@
 import * as mysql from 'mysql2/promise';
 import { RowDataPacket } from 'mysql2/promise';
 
-import Config from './config';
+import { config } from "./services/config";
 
 export interface Account {
     id: number;
@@ -59,7 +59,7 @@ class DB {
         await this.conn.query("SELECT 1");
         // try to auto detect what kind of database it is
         // first load details about this database
-        let raw_tables_and_columns = await this.query("SELECT TABLE_NAME as `table`, COLUMN_NAME as `column` FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA LIKE ?", [Config.mysql.database]);
+        let raw_tables_and_columns = await this.query("SELECT TABLE_NAME as `table`, COLUMN_NAME as `column` FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA LIKE ?", [process.env.MYSQL_DATABASE]);
         raw_tables_and_columns.forEach((table_column) => {
             if (!this.tables[table_column.table]) {
                 this.tables[table_column.table] = [];

@@ -1,7 +1,6 @@
-import { config } from "dotenv";
-config();
+import { config as dotEnv } from "dotenv";
+dotEnv();
 
-import Config from './config';
 import Crypto from './crypto';
 import DB from './db';
 import Server from './server';

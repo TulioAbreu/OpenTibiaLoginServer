@@ -1,9 +1,9 @@
-import Config from './config';
+import { config } from './services/config';
 
 export function getMotdId(account_id?: number): number {
-    return Config.motd.id;
+    return config.motd.id;
 }
 
 export function getMotd(account_id?: number): string {
-    return Config.motd.text;
+    return config.motd.text;
 }

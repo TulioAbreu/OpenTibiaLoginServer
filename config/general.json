@@ -1,0 +1,56 @@
+{
+    "keyFile": "key.pem",
+    "encryption": "sha1",
+    "casts": true,
+    "cams": true,
+    "version": {
+        "min": 800,
+        "max": 1100
+    },
+    "motd": {
+        "id": 1,
+        "text": "Hello!"
+    },
+    "tcp": {
+        "enabled": true,
+        "host": "0.0.0.0",
+        "ports": [
+            7171
+        ]
+    },
+    "http": {
+        "enabled": true,
+        "host": "0.0.0.0",
+        "ports": [
+            8000
+        ],
+        "ssl": {
+            "enabled": false,
+            "cert": "ssl_cert.pem",
+            "key": "ssl_key.pem",
+            "passphrase": "ot"
+        }
+    },
+    "limits": {
+        "connections": {
+            "interval": [
+                10,
+                180
+            ],
+            "limit": [
+                10,
+                60
+            ]
+        },
+        "authorizations": {
+            "interval": [
+                60,
+                1800
+            ],
+            "limit": [
+                5,
+                20
+            ]
+        }
+    }
+}

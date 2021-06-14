@@ -3,8 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as constants from 'constants';
 import { authenticator } from 'otplib';
-
-import Config from './config';
+import { config } from './services/config';
 
 authenticator.options = {
     window: 2
@@ -18,11 +17,11 @@ class Crypto {
             throw "Crypto is already initialized";
         }
         try {
-            const keyFilePath = path.resolve(Config.keyFile);
+            const keyFilePath = path.resolve(config.keyFile);
             this.privateKey = fs.readFileSync(keyFilePath, 'utf-8').toString().trim();
             crypto.publicEncrypt(this.privateKey, Buffer.from("Test"));
         } catch (e) {
-            throw `Can't load private key from ${Config.keyFile}`
+            throw `Can't load private key from ${config.keyFile}`
         }
     }
 

@@ -1,4 +1,4 @@
-import Config from './config';
+import { config } from './services/config';
 import { ip2int } from './utils/ip-to-int';
 
 interface Limit {
@@ -28,14 +28,14 @@ class Limits {
 
         if (!this.connectionLimits.has(addr)) {
             this.connectionLimits.set(addr, {
-                t: new Array<number>(Config.limits.connections.interval.length).fill(0),
-                c: new Array<number>(Config.limits.connections.interval.length).fill(0),
+                t: new Array<number>(config.limits.connections.interval.length).fill(0),
+                c: new Array<number>(config.limits.connections.interval.length).fill(0),
             });
         }
 
         let limit = this.connectionLimits.get(addr);
         for (let i = 0; i < limit.c.length; ++i) {
-            if (limit.t[i] + Config.limits.connections.interval[i] < Date.now() / 1000) {
+            if (limit.t[i] + config.limits.connections.interval[i] < Date.now() / 1000) {
                 limit.t[i] = Date.now() / 1000;
                 limit.c[i] = 0;
             }
@@ -43,7 +43,7 @@ class Limits {
         }
 
         for (let i = 0; i < limit.c.length; ++i) {
-            if (limit.c[i] >= Config.limits.connections.limit[i]) {
+            if (limit.c[i] >= config.limits.connections.limit[i]) {
                 return false;
             }
         }
@@ -61,14 +61,14 @@ class Limits {
         }
 
         for (let i = 0; i < limit.c.length; ++i) {
-            if (limit.t[i] + Config.limits.authorizations.interval[i] < Date.now() / 1000) {
+            if (limit.t[i] + config.limits.authorizations.interval[i] < Date.now() / 1000) {
                 limit.t[i] = Date.now() / 1000;
                 limit.c[i] = 0;
             }
         }
 
         for (let i = 0; i < limit.c.length; ++i) {
-            if (limit.c[i] >= Config.limits.authorizations.limit[i]) {
+            if (limit.c[i] >= config.limits.authorizations.limit[i]) {
                 return false;
             }
         }
@@ -83,14 +83,14 @@ class Limits {
 
         if (!this.authLimits.has(addr)) {
             this.authLimits.set(addr, {
-                t: new Array<number>(Config.limits.authorizations.interval.length).fill(0),
-                c: new Array<number>(Config.limits.authorizations.interval.length).fill(0),
+                t: new Array<number>(config.limits.authorizations.interval.length).fill(0),
+                c: new Array<number>(config.limits.authorizations.interval.length).fill(0),
             });
         }
 
         let limit = this.authLimits.get(addr);
         for (let i = 0; i < limit.c.length; ++i) {
-            if (limit.t[i] + Config.limits.authorizations.interval[i] < Date.now() / 1000) {
+            if (limit.t[i] + config.limits.authorizations.interval[i] < Date.now() / 1000) {
                 limit.t[i] = Date.now() / 1000;
                 limit.c[i] = 0;
             }

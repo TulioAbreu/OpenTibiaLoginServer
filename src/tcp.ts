@@ -2,7 +2,8 @@ import * as net from 'net';
 
 import Cams from './cams';
 import Casts from './casts';
-import Config from './config';
+import { config } from './services/config';
+import { worlds } from "./services/world";
 import Crypto from './crypto';
 import DB, { Account, Character } from './db';
 import Limits from './limits';
@@ -15,6 +16,9 @@ import { encryptPassword } from './services/crypto/hash-password';
 
 const TIMEOUT = 15000;
 const MAX_PACKET_SIZE = 1024;
+const ENCRYPTION_ALGORITHM = config.encryption;
+const PROTOCOL_MIN_VERSION = config.version.min;
+const PROTOCOL_MAX_VERSION = config.version.max;
 
 interface ConnectionData {
     size: number;
@@ -224,8 +228,8 @@ export default class TibiaTCP {
             this.send(socket, outputPacket, has_checksum, xtea);
         }
 
-        if (Config.version.min > version || version > Config.version.max) {
-            return loginError(`Invalid client version (should be: ${Config.version.min}-${Config.version.max}, is: ${version}).`);
+        if (PROTOCOL_MIN_VERSION < version && version < PROTOCOL_MAX_VERSION) {
+            return loginError(`Invalid client version (should be: ${PROTOCOL_MIN_VERSION}-${PROTOCOL_MAX_VERSION}, is: ${version}).`);
         }
 
         if (socket && !Limits.acceptAuthorization(socket.address().address)) {
@@ -248,8 +252,8 @@ export default class TibiaTCP {
         } else {
             account = await DB.loadAccountByName(account_name); // by name, for >=840
         }
-
-        let hashed_password = encryptPassword(Config.encryption, account_password);
+        // FIXME: any
+        let hashed_password = encryptPassword(ENCRYPTION_ALGORITHM as any, account_password);
         if (!account || account.password != hashed_password) {
             if (socket) {
                 Limits.addInvalidAuthorization(socket.address().address);
@@ -292,8 +296,8 @@ export default class TibiaTCP {
 
         if (version >= 1010) {
             // worlds
-            outputPacket.addU8(Config.worlds.size);
-            Config.worlds.forEach((world, worldId) => {
+            outputPacket.addU8(worlds.size);
+            worlds.forEach((world, worldId) => {
                 outputPacket.addU8(worldId);
                 outputPacket.addString(world.name);
                 outputPacket.addString(world.host);
@@ -312,7 +316,7 @@ export default class TibiaTCP {
             outputPacket.addU8(characters.length);
             characters.forEach(character => {
                 outputPacket.addString(character.name);
-                let world = Config.worlds.get(character.world_id); // keys are numbers
+                let world = worlds.get(character.world_id); // keys are numbers
                 if (!world) {
                     outputPacket.addString(`INVALID WORLD ${character.world_id}`)
                     outputPacket.addU32(0);

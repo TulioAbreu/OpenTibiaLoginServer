@@ -10,6 +10,7 @@ enum EncryptionMethod {
 }
 
 // TODO: Add support for methods with salt/hash
+// FIXME: This operation blocks the main thread.
 export function encryptPassword(algorithm: EncryptionMethod, password: string): string {
     return createHash(algorithm)
         .update(password)

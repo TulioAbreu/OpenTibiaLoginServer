@@ -11,26 +11,32 @@
     "build": "tsc --build",
     "clean": "tsc --build --clean",
     "start": "node build/src/app.js",
+    "test": "jest",
     "benchmark": "node build/tests/benchmark.js",
-    "lint": "eslint src --ext .ts",
+    "lint": "eslint src/",
     "lint:fix": "npm run lint -- --fix"
   },
   "devDependencies": {
+    "@types/jest": "^26.0.23",
     "@types/mysql2": "github:types/mysql2",
     "@types/node": "^8.0.14",
     "@types/xml2js": "^0.4.5",
+    "@types/yup": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
     "@typescript-eslint/parser": "^4.27.0",
     "eslint": "^7.28.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^27.0.4",
     "prettier": "^2.3.1",
+    "ts-jest": "^27.0.3",
     "typescript": "^3.2.2"
   },
   "dependencies": {
     "mysql2": "^2.1.0",
     "otplib": "^12.0.1",
     "uWebSockets.js": "github:uNetworking/uWebSockets.js#v17.3.0",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "yup": "^0.32.9"
   }
 }

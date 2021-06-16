@@ -9,7 +9,7 @@ import Limits from './limits';
 import {InputPacket, OutputPacket} from './packet';
 import {getMotd, getMotdId} from './motd';
 import Status from './status';
-import {ip2int} from './utils';
+import {ip2int} from './utils/ip2int';
 
 const TIMEOUT = 15000;
 const MAX_PACKET_SIZE = 1024;

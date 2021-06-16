@@ -1,5 +1,5 @@
 import Config from './config';
-import {ip2int} from './utils';
+import {ip2int} from './utils/ip2int';
 
 interface Limit {
     t: Array<number>; // time

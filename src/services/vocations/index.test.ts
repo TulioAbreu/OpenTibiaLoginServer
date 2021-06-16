@@ -38,7 +38,7 @@ describe('Vocations', () => {
     describe('Vocations', () => {
         describe('getVocationNameByID', () => {
             test('it should return correct names', () => {
-                jest.spyOn(fs, 'readFileSync').mockReturnValue(
+                jest.spyOn(fs, 'readFileSync').mockReturnValueOnce(
                     JSON.stringify([
                         {
                             id: 0,

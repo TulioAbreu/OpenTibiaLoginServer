@@ -1,4 +1,4 @@
-import { TemplatedApp, WebSocket, HttpResponse } from 'uWebSockets.js';
+import {TemplatedApp, WebSocket, HttpResponse} from 'uWebSockets.js';
 import Limits from './limits';
 
 const CHECK_INTERVAL = 4000; // for ping
@@ -13,32 +13,27 @@ export default class TibiaWebSocket {
             idleTimeout: 10,
             open: this.onOpen,
             close: this.onClose,
-            message: this.onMessage
+            message: this.onMessage,
         });
 
         this.checkInterval = setInterval(this.check, CHECK_INTERVAL);
-    }
+    };
 
     stop = () => {
-        clearInterval(this.checkInterval)
-    }
+        clearInterval(this.checkInterval);
+    };
 
-    private check = () => {
-
-    }
+    private check = () => {};
 
     private onOpen = (ws: WebSocket, req) => {
         if (!Limits.acceptConnection(Buffer.from(ws.getRemoteAddress()))) {
             return ws.close();
         }
-        
-    }
+    };
 
-    private onClose = (ws, code, message) => {
-
-    }
+    private onClose = (ws, code, message) => {};
 
     private onMessage = (ws, message, isBinary) => {
         console.log(message);
-    }
+    };
 }

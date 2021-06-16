@@ -1,4 +1,10 @@
-import { App, SSLApp, TemplatedApp, us_listen_socket, us_listen_socket_close } from 'uWebSockets.js';
+import {
+    App,
+    SSLApp,
+    TemplatedApp,
+    us_listen_socket,
+    us_listen_socket_close,
+} from 'uWebSockets.js';
 
 import Config from './config';
 
@@ -15,11 +21,11 @@ export default class Server {
 
     start = async () => {
         if (Config.tcp.enabled) {
-            Config.tcp.ports.forEach(port => {
-                let tcp = new TibiaTCP();
+            Config.tcp.ports.forEach((port) => {
+                const tcp = new TibiaTCP();
                 tcp.start(Config.tcp.host, port);
                 this.tcps.push(tcp);
-            })
+            });
         }
 
         if (Config.http.enabled) {
@@ -28,7 +34,7 @@ export default class Server {
                     this.app = SSLApp({
                         cert_file_name: Config.http.ssl.cert,
                         key_file_name: Config.http.ssl.key,
-                        passphrase: Config.http.ssl.passphrase
+                        passphrase: Config.http.ssl.passphrase,
                     });
                 } catch (e) {
                     throw `${e.toString()}\nMake sure if your SSL config for http server is correct`;
@@ -53,15 +59,15 @@ export default class Server {
                 });
             });
         }
-    }
+    };
 
     stop = () => {
-        this.tcps.forEach(tcp => {
+        this.tcps.forEach((tcp) => {
             tcp.stop();
         });
         this.tcps = [];
 
-        this.sockets.forEach(socket => {
+        this.sockets.forEach((socket) => {
             us_listen_socket_close(socket);
         });
         this.sockets = [];
@@ -73,6 +79,5 @@ export default class Server {
             this.ws = null;
             this.app = null;
         }
-    }
-
+    };
 }

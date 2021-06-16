@@ -50,9 +50,9 @@ describe('Vocations', () => {
                         },
                     ]),
                 );
-                const vocations = new Vocations();
-                expect(vocations.getVocationNameByID(0)).toBe('Knight');
-                expect(vocations.getVocationNameByID(1)).toBe('Sorcerer');
+                Vocations.loadVocationsFile();
+                expect(Vocations.getVocationNameByID(0)).toBe('Knight');
+                expect(Vocations.getVocationNameByID(1)).toBe('Sorcerer');
             });
         });
     });

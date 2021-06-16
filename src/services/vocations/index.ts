@@ -1,4 +1,4 @@
-import {readJSONFileSync} from '../../read-json-file';
+import {readJSONFileSync} from '../../utils/read-json-file';
 import {VocationsSchema} from './schema';
 
 const VocationsPath = './config/vocations.json';
@@ -9,7 +9,7 @@ export interface Vocation {
     name: string;
 }
 
-export default class Vocations {
+class Vocations {
     private vocations: Map<number, Vocation>;
 
     constructor() {
@@ -43,3 +43,5 @@ export default class Vocations {
         return vocationsMap;
     }
 }
+
+export default new Vocations();

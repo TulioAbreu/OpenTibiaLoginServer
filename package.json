@@ -17,9 +17,11 @@
     "lint:fix": "npm run lint -- --fix"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^26.0.23",
     "@types/mysql2": "github:types/mysql2",
     "@types/node": "^8.0.14",
+    "@types/ronomon__crypto-async": "^2.0.0",
     "@types/xml2js": "^0.4.5",
     "@types/yup": "^0.29.11",
     "@typescript-eslint/eslint-plugin": "^4.27.0",
@@ -33,6 +35,9 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
+    "@ronomon/crypto-async": "^5.0.1",
+    "adler-32": "^1.3.0",
+    "bcrypt": "^5.0.1",
     "fastify": "^3.18.0",
     "fastify-websocket": "^3.2.0",
     "mysql2": "^2.1.0",

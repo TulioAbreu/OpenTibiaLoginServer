@@ -1,4 +1,5 @@
-import Crypto from './crypto';
+import * as Crypto from './utils/crypto';
+import LegacyCrypto from './crypto';
 
 export class InputPacket {
     private buffer: Buffer;
@@ -85,7 +86,7 @@ export class InputPacket {
     };
 
     rsaDecrypt = () => {
-        return new InputPacket(Crypto.rsaDecrypt(this.getBytes(128)));
+        return new InputPacket(LegacyCrypto.rsaDecrypt(this.getBytes(128)));
     };
 
     adler32 = (): number => {

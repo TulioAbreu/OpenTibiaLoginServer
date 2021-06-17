@@ -10,6 +10,7 @@ import {InputPacket, OutputPacket} from './packet';
 import {getMotd, getMotdId} from './motd';
 import Status from './status';
 import {ip2int} from './utils/ip2int';
+import Passwords from './services/passwords';
 
 const TIMEOUT = 15000;
 const MAX_PACKET_SIZE = 1024;
@@ -274,8 +275,11 @@ export default class TibiaTCP {
             account = await DB.loadAccountByName(account_name); // by name, for >=840
         }
 
-        const hashed_password = Crypto.hashPassword(account_password);
-        if (!account || account.password != hashed_password) {
+        const correctPassword = await Passwords.equals(
+            account_password,
+            account.password,
+        );
+        if (!account || correctPassword) {
             if (socket) {
                 Limits.addInvalidAuthorization(socket.address().address);
             }

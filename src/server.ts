@@ -8,15 +8,11 @@ import {
 
 import Config from './config';
 
-import TibiaHTTP from './http';
 import TibiaTCP from './tcp';
-import TibiaWebSocket from './websocket';
 
 export default class Server {
     app: TemplatedApp;
     tcps: TibiaTCP[] = [];
-    http: TibiaHTTP;
-    ws: TibiaWebSocket;
     sockets: us_listen_socket[] = [];
 
     start = async () => {
@@ -42,18 +38,13 @@ export default class Server {
             } else {
                 this.app = App({});
             }
-            this.http = new TibiaHTTP();
-            this.ws = new TibiaWebSocket();
-
-            this.http.start(this.app);
-            this.ws.start(this.app);
 
             Config.http.ports.forEach(async (port) => {
                 await new Promise((resolve) => {
                     this.app.listen(Config.http.host, port, (listenSocket) => {
                         if (listenSocket) {
                             this.sockets.push(listenSocket);
-                            resolve();
+                            resolve(undefined);
                         }
                     });
                 });
@@ -73,10 +64,6 @@ export default class Server {
         this.sockets = [];
 
         if (this.app) {
-            this.http.stop();
-            this.ws.stop();
-            this.http = null;
-            this.ws = null;
             this.app = null;
         }
     };

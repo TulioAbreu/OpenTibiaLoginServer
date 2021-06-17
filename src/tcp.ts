@@ -254,7 +254,7 @@ export default class TibiaTCP {
 
         if (socket && !Limits.acceptAuthorization(socket.address().address)) {
             return loginError(
-                'Too many invalid login attempts.\nYou has been blocked for few minutes.',
+                'Too many invalid login attempts.\nYou have been blocked for few minutes.',
             );
         }
 

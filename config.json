@@ -1,6 +1,6 @@
 {
   "keyFile": "key.pem",
-  "encryption": "sha1",
+  "encryption": "bcrypt",
   "casts": true,
   "cams": true,
   "version": {
@@ -10,12 +10,6 @@
   "motd": {
     "id": 1,
     "text": "Hello!"
-  },
-  "mysql": {
-    "host": "otclient.ovh",
-    "user": "otclient",
-    "password": "otclient",
-    "database": "otclient"
   },
   "tcp": {
     "enabled": true,

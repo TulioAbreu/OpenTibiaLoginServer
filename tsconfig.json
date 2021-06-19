@@ -2,9 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "lib": ["es6"],
+    "lib": ["es6", "ESNext"],
     "sourceMap": true,
-    "outDir": "build"
+    "outDir": "build",
+    "experimentalDecorators": true,
   },
   "exclude": [
     "node_modules"

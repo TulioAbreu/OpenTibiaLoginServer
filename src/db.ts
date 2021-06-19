@@ -2,18 +2,8 @@ import * as mysql from 'mysql2/promise';
 import {RowDataPacket} from 'mysql2/promise';
 
 import Config from './config';
-
-export interface Account {
-    id: number;
-    name: string;
-    password: string;
-    type: number;
-    premdays: number;
-    email: string;
-    secret: string;
-    lastday: number;
-    lastip: number;
-}
+import {Account, AccountRepository} from './models/account';
+import {Maybe} from './utils/maybe';
 
 export interface Character {
     id: number;
@@ -46,15 +36,6 @@ class DB {
         if (this.conn) {
             throw 'DB has already started';
         }
-        this.conn = await mysql.createPool({
-            host: Config.mysql.host,
-            user: Config.mysql.user,
-            password: Config.mysql.password,
-            database: Config.mysql.database,
-            waitForConnections: true,
-            connectionLimit: 10,
-            queueLimit: 10000,
-        });
         // check connection
         await this.conn.query('SELECT 1');
         // try to auto detect what kind of database it is
@@ -82,9 +63,9 @@ class DB {
         this.hasCams = 'cams' in this.tables;
     };
 
-    stop = async () => {
+    async stop() {
         await this.conn.end();
-    };
+    }
 
     query = async (query: string, params?: any[]): Promise<RowDataPacket[]> => {
         const [result, fields] = await this.conn.execute<RowDataPacket[]>(
@@ -94,41 +75,23 @@ class DB {
         return result;
     };
 
-    loadAccountById = async (id: number): Promise<Account> => {
-        const accounts = await this.query(
-            'SELECT * FROM `accounts` where `id` = ?',
-            [id],
-        );
-        if (accounts.length != 1) {
+    async loadAccountById(id: number): Promise<Maybe<Account>> {
+        const account = AccountRepository().findOne(id);
+        if (!account) {
             return null;
         }
-        return this.parseAccount(accounts[0]);
-    };
+        return account;
+    }
 
-    loadAccountByName = async (name: string): Promise<Account> => {
-        const accounts = await this.query(
-            'SELECT * FROM `accounts` where `name` = ?',
-            [name],
-        );
-        if (accounts.length != 1) {
+    async loadAccountByName(name: string): Promise<Account> {
+        const account = AccountRepository().findOne({
+            name: name,
+        });
+        if (!account) {
             return null;
         }
-        return this.parseAccount(accounts[0]);
-    };
-
-    parseAccount = (account: RowDataPacket): Account => {
-        return {
-            id: account.id,
-            name: account.name || account.id,
-            password: account.password,
-            type: account.type,
-            premdays: account.premdays,
-            email: account.email,
-            secret: account.secret || '',
-            lastday: account.lastday || 0,
-            lastip: account.lastip || 0,
-        };
-    };
+        return account;
+    }
 
     loadCharactersByAccountId = async (
         accountId: number | string,
@@ -199,7 +162,7 @@ class DB {
     getOnlineRecord = async (world_id?: number): Promise<number> => {
         if (this.hasServerConfig) {
             const result = await this.query(
-                'SELECT `value` FROM `server_config` WHERE `config` = \'players_record\'',
+                "SELECT `value` FROM `server_config` WHERE `config` = 'players_record'",
             );
             if (result.length == 1) {
                 return result[0].value;

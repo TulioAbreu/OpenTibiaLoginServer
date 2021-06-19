@@ -4,13 +4,14 @@ import Cams from './cams';
 import Casts from './casts';
 import Config from './config';
 import Crypto from './crypto';
-import DB, {Account, Character} from './db';
+import DB from './db';
 import Limits from './limits';
 import {InputPacket, OutputPacket} from './packet';
 import {getMotd, getMotdId} from './motd';
 import Status from './status';
 import {ip2int} from './utils/ip2int';
 import Passwords from './services/passwords';
+import {Account, AccountRepository} from './models/account';
 
 const TIMEOUT = 15000;
 const MAX_PACKET_SIZE = 1024;
@@ -270,9 +271,13 @@ export default class TibiaTCP {
 
         let account: Account;
         if (typeof account_name == 'number') {
-            account = await DB.loadAccountById(account_name); // by id, for <840
+            account = await AccountRepository().findOne(account_name); // by id, for <840
         } else {
-            account = await DB.loadAccountByName(account_name); // by name, for >=840
+            account = await AccountRepository().findOne({
+                where: {
+                    name: account_name,
+                },
+            }); // by name, for >=840
         }
 
         const correctPassword = await Passwords.equals(
@@ -290,8 +295,8 @@ export default class TibiaTCP {
         const characters = await DB.loadCharactersByAccountId(account.id);
 
         // token
-        if (account.secret.length > 0 && account_token != null) {
-            if (!Crypto.validateToken(account_token, account.secret)) {
+        if (account.key.length > 0 && account_token != null) {
+            if (!Crypto.validateToken(account_token, account.key)) {
                 if (socket && account_token.length > 0) {
                     Limits.addInvalidAuthorization(socket.address().address);
                 }
